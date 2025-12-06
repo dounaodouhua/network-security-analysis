@@ -13,7 +13,7 @@ class Config:
     DATA_PATH = "data/UNSW-NB15_1.csv"
 
     # 大模型配置
-    LLM_API_KEY = os.getenv("DEEPSEEK_API_KEY", "sk-461306fc1f4544f697e5b6d6dec5a82c")  # DeepSeek API Key
+    LLM_API_KEY = os.getenv("api", "sk-ca8ce42d044c4b87ac2c31bdd2ef4f17")  # DeepSeek API Key
     LLM_MODEL = "deepseek-chat"  # DeepSeek 模型
     LLM_BASE_URL = "https://api.deepseek.com/v1"  # DeepSeek API 地址
 

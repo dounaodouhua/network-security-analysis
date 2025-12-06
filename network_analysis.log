@@ -2283,3 +2283,150 @@ Traceback (most recent call last):
     raise Py4JNetworkError(
 py4j.protocol.Py4JNetworkError: Error while sending or receiving
 2025-12-04 00:03:20,664 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 18:27:51,715 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 18:29:40,548 - main - INFO - 开始网络安全态势分析
+2025-12-06 18:29:40,552 - main - INFO - 步骤1: 数据获取与理解
+2025-12-06 18:29:40,552 - data_loader - INFO - 加载UNSW-NB15数据集: data/UNSW-NB15_1.csv
+2025-12-06 18:29:46,661 - data_loader - INFO - 成功加载UNSW-NB15数据集，共 700001 条记录
+2025-12-06 18:30:06,811 - main - INFO - 步骤2: 数据预处理
+2025-12-06 18:30:06,812 - data_preprocessor - INFO - 开始数据预处理
+2025-12-06 18:30:06,812 - data_preprocessor - INFO - 数据清洗...
+2025-12-06 18:30:11,831 - data_preprocessor - INFO - 特征工程...
+2025-12-06 18:30:14,581 - data_preprocessor - INFO - 处理数据不平衡...
+2025-12-06 18:30:15,642 - data_preprocessor - INFO - 检测到数据不平衡（442054:14087），使用随机过采样...
+2025-12-06 18:30:17,184 - main - INFO - 步骤3: 网络流量分析
+2025-12-06 18:30:17,184 - traffic_analyzer - INFO - 开始网络流量分析
+2025-12-06 18:30:17,185 - traffic_analyzer - INFO - 执行基本统计分析
+2025-12-06 18:30:37,712 - traffic_analyzer - INFO - 执行时间分布分析
+2025-12-06 18:30:39,363 - traffic_analyzer - INFO - 执行协议分布分析
+2025-12-06 18:30:47,844 - traffic_analyzer - INFO - 执行攻击模式分析
+2025-12-06 18:30:54,095 - traffic_analyzer - INFO - 执行异常检测分析
+2025-12-06 18:31:09,159 - traffic_analyzer - INFO - 执行IP行为分析
+2025-12-06 18:31:13,742 - traffic_analyzer - INFO - 执行流量模式分析
+2025-12-06 18:31:15,042 - traffic_analyzer - INFO - 生成分析摘要
+2025-12-06 18:31:15,043 - main - INFO - 步骤4: 生成分析报告
+2025-12-06 18:31:15,043 - report_generator - INFO - 生成分析报告
+2025-12-06 18:31:15,218 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-12-06 18:32:22,341 - report_generator - INFO - LLM报告生成成功 (模型: deepseek-chat)
+2025-12-06 18:32:22,344 - report_generator - INFO - 报告已保存到: reports\llm_report.md
+2025-12-06 18:32:22,344 - main - INFO - 步骤5: 创建可视化
+2025-12-06 18:32:22,344 - visualizer - INFO - 创建可视化仪表盘
+2025-12-06 18:32:22,508 - main - INFO - 分析完成！
+2025-12-06 18:32:22,885 - main - INFO - Spark会话已关闭
+2025-12-06 18:32:22,893 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 18:36:49,055 - main - INFO - 开始网络安全态势分析
+2025-12-06 18:36:49,055 - main - INFO - 步骤1: 数据获取与理解
+2025-12-06 18:36:49,056 - data_loader - INFO - 加载UNSW-NB15数据集: data/UNSW-NB15_1.csv
+2025-12-06 18:36:56,303 - data_loader - INFO - 成功加载UNSW-NB15数据集，共 700001 条记录
+2025-12-06 18:37:17,157 - main - INFO - 步骤2: 数据预处理
+2025-12-06 18:37:17,158 - data_preprocessor - INFO - 开始数据预处理
+2025-12-06 18:37:17,158 - data_preprocessor - INFO - 数据清洗...
+2025-12-06 18:37:22,442 - data_preprocessor - INFO - 特征工程...
+2025-12-06 18:37:25,000 - data_preprocessor - INFO - 处理数据不平衡...
+2025-12-06 18:37:25,947 - data_preprocessor - INFO - 检测到数据不平衡（442054:14087），使用随机过采样...
+2025-12-06 18:37:27,462 - main - INFO - 步骤3: 网络流量分析
+2025-12-06 18:37:27,463 - traffic_analyzer - INFO - 开始网络流量分析
+2025-12-06 18:37:27,463 - traffic_analyzer - INFO - 执行基本统计分析
+2025-12-06 18:37:44,885 - traffic_analyzer - INFO - 执行时间分布分析
+2025-12-06 18:37:46,676 - traffic_analyzer - INFO - 执行协议分布分析
+2025-12-06 18:37:54,515 - traffic_analyzer - INFO - 执行攻击模式分析
+2025-12-06 18:37:59,958 - traffic_analyzer - INFO - 执行异常检测分析
+2025-12-06 18:38:14,679 - traffic_analyzer - INFO - 执行IP行为分析
+2025-12-06 18:38:19,238 - traffic_analyzer - INFO - 执行流量模式分析
+2025-12-06 18:38:20,518 - traffic_analyzer - INFO - 生成分析摘要
+2025-12-06 18:38:20,518 - main - INFO - 步骤4: 生成分析报告
+2025-12-06 18:38:20,519 - report_generator - INFO - 生成分析报告
+2025-12-06 18:38:20,678 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-12-06 18:39:26,987 - report_generator - INFO - LLM报告生成成功 (模型: deepseek-chat)
+2025-12-06 18:39:26,988 - report_generator - INFO - 报告已保存到: reports\llm_report.md
+2025-12-06 18:39:26,988 - main - INFO - 步骤5: 创建可视化
+2025-12-06 18:39:26,989 - visualizer - INFO - 创建可视化仪表盘
+2025-12-06 18:39:27,080 - main - INFO - 分析完成！
+2025-12-06 18:39:27,081 - dash.dash - INFO - Dash is running on http://127.0.0.1:8050/
+
+2025-12-06 18:39:33,737 - main - INFO - 开始网络安全态势分析
+2025-12-06 18:39:33,738 - main - INFO - 步骤1: 数据获取与理解
+2025-12-06 18:39:33,738 - data_loader - INFO - 加载UNSW-NB15数据集: data/UNSW-NB15_1.csv
+2025-12-06 18:39:40,925 - data_loader - INFO - 成功加载UNSW-NB15数据集，共 700001 条记录
+2025-12-06 18:40:04,085 - main - INFO - 步骤2: 数据预处理
+2025-12-06 18:40:04,085 - data_preprocessor - INFO - 开始数据预处理
+2025-12-06 18:40:04,085 - data_preprocessor - INFO - 数据清洗...
+2025-12-06 18:40:08,354 - data_preprocessor - INFO - 特征工程...
+2025-12-06 18:40:10,386 - data_preprocessor - INFO - 处理数据不平衡...
+2025-12-06 18:40:11,343 - data_preprocessor - INFO - 检测到数据不平衡（442054:14087），使用随机过采样...
+2025-12-06 18:40:12,514 - main - INFO - 步骤3: 网络流量分析
+2025-12-06 18:40:12,514 - traffic_analyzer - INFO - 开始网络流量分析
+2025-12-06 18:40:12,514 - traffic_analyzer - INFO - 执行基本统计分析
+2025-12-06 18:40:26,569 - traffic_analyzer - INFO - 执行时间分布分析
+2025-12-06 18:40:27,957 - traffic_analyzer - INFO - 执行协议分布分析
+2025-12-06 18:40:33,942 - traffic_analyzer - INFO - 执行攻击模式分析
+2025-12-06 18:40:38,332 - traffic_analyzer - INFO - 执行异常检测分析
+2025-12-06 18:40:50,019 - traffic_analyzer - INFO - 执行IP行为分析
+2025-12-06 18:40:53,602 - traffic_analyzer - INFO - 执行流量模式分析
+2025-12-06 18:40:54,674 - traffic_analyzer - INFO - 生成分析摘要
+2025-12-06 18:40:54,674 - main - INFO - 步骤4: 生成分析报告
+2025-12-06 18:40:54,674 - report_generator - INFO - 生成分析报告
+2025-12-06 18:40:54,870 - httpx - INFO - HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-12-06 18:42:03,542 - report_generator - INFO - LLM报告生成成功 (模型: deepseek-chat)
+2025-12-06 18:42:03,542 - report_generator - INFO - 报告已保存到: reports\llm_report.md
+2025-12-06 18:42:03,542 - main - INFO - 步骤5: 创建可视化
+2025-12-06 18:42:03,543 - visualizer - INFO - 创建可视化仪表盘
+2025-12-06 18:42:03,654 - main - INFO - 分析完成！
+2025-12-06 18:57:22,418 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "D:\dev\python\python3.11.5\Lib\site-packages\py4j\clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\python3.11.5\Lib\socket.py", line 706, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+2025-12-06 18:57:22,422 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 18:57:22,422 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "D:\dev\python\python3.11.5\Lib\site-packages\py4j\clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\python3.11.5\Lib\socket.py", line 706, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\dev\python\python3.11.5\Lib\site-packages\py4j\java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\python3.11.5\Lib\site-packages\py4j\clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2025-12-06 18:57:22,428 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 18:57:22,454 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 18:57:23,312 - py4j.clientserver - INFO - Error while sending or receiving.
+Traceback (most recent call last):
+  File "D:\dev\python\python3.11.5\Lib\site-packages\py4j\clientserver.py", line 503, in send_command
+    self.socket.sendall(command.encode("utf-8"))
+ConnectionResetError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+2025-12-06 18:57:23,331 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 18:57:23,333 - root - INFO - Exception while sending command.
+Traceback (most recent call last):
+  File "D:\dev\python\python3.11.5\Lib\site-packages\py4j\clientserver.py", line 503, in send_command
+    self.socket.sendall(command.encode("utf-8"))
+ConnectionResetError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\dev\python\python3.11.5\Lib\site-packages\py4j\java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\python3.11.5\Lib\site-packages\py4j\clientserver.py", line 506, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending
+2025-12-06 18:57:25,388 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 18:57:25,426 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 18:57:25,428 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 18:57:27,466 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 18:57:27,508 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 18:57:27,880 - py4j.clientserver - INFO - Closing down clientserver connection
