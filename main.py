@@ -21,13 +21,14 @@ from visualizer import NetworkVisualizer
 
 
 class NetworkSecurityAnalysis:
-    """网络安全分析主类 - UNSW-NB15数据集"""
+    """网络安全分析主类 - 支持多数据集"""
 
-    def __init__(self):
+    def __init__(self, dataset="unsw_nb15"):  # 接收数据集参数
         self.spark = create_spark_session()
+        self.dataset = dataset  # 保存数据集类型
         self.logger = self._setup_logging()
 
-        # 初始化组件
+        # 初始化组件（保持不变）
         self.data_loader = DataLoader(self.spark)
         self.preprocessor = DataPreprocessor(self.spark)
         self.analyzer = TrafficAnalyzer(self.spark)
@@ -51,14 +52,15 @@ class NetworkSecurityAnalysis:
 
     def run_pipeline(self):
         """运行完整分析流水线"""
-        self.logger.info("开始网络安全态势分析")
+        self.logger.info(f"开始 {self.dataset} 数据集的网络安全态势分析")
 
         try:
-            # 1. 数据加载
+            # 1. 数据加载：根据数据集类型加载
             self.logger.info("步骤1: 数据获取与理解")
-            df = self.data_loader.load_dataset()
-            self.results['raw_data'] = df
-            self.results['data_stats'] = self.data_loader.get_data_statistics(df)
+            if self.dataset == "kddcup99":
+                df = self.data_loader.load_kdd99()  # 调用KDD99加载方法
+            else:
+                df = self.data_loader.load_dataset()  # 默认加载UNSW-NB15
 
             # 2. 数据预处理
             self.logger.info("步骤2: 数据预处理")

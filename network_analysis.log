@@ -2430,3 +2430,23 @@ py4j.protocol.Py4JNetworkError: Error while sending
 2025-12-06 18:57:27,466 - py4j.clientserver - INFO - Closing down clientserver connection
 2025-12-06 18:57:27,508 - py4j.clientserver - INFO - Closing down clientserver connection
 2025-12-06 18:57:27,880 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 19:30:29,017 - main - INFO - 开始 kddcup99 数据集的网络安全态势分析
+2025-12-06 19:30:29,018 - main - INFO - 步骤1: 数据获取与理解
+2025-12-06 19:30:29,019 - main - ERROR - 分析过程中发生错误: type object 'Config' has no attribute 'KDD99_TRAIN_PATH'
+2025-12-06 19:30:29,454 - main - INFO - Spark会话已关闭
+2025-12-06 19:30:29,461 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 19:33:27,213 - main - INFO - 开始 kddcup99 数据集的网络安全态势分析
+2025-12-06 19:33:27,213 - main - INFO - 步骤1: 数据获取与理解
+2025-12-06 19:33:29,141 - main - ERROR - 分析过程中发生错误: [PATH_NOT_FOUND] Path does not exist: file:/D:/python/network-security-analysis/data/kddcup99/kddcup.data_10_percent.
+2025-12-06 19:33:29,698 - main - INFO - Spark会话已关闭
+2025-12-06 19:33:29,706 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 19:34:50,340 - main - INFO - 开始 kddcup99 数据集的网络安全态势分析
+2025-12-06 19:34:50,342 - main - INFO - 步骤1: 数据获取与理解
+2025-12-06 19:34:51,880 - main - ERROR - 分析过程中发生错误: [PATH_NOT_FOUND] Path does not exist: file:/D:/python/network-security-analysis/data/kddcup99/kddcup.data_10_percent.
+2025-12-06 19:34:52,345 - main - INFO - Spark会话已关闭
+2025-12-06 19:34:52,354 - py4j.clientserver - INFO - Closing down clientserver connection
+2025-12-06 19:36:36,074 - main - INFO - 开始 kddcup99 数据集的网络安全态势分析
+2025-12-06 19:36:36,075 - main - INFO - 步骤1: 数据获取与理解
+2025-12-06 19:36:37,659 - main - ERROR - 分析过程中发生错误: [PATH_NOT_FOUND] Path does not exist: file:/D:/python/network-security-analysis/data/kddcup99/kddcup.data_10_percent.
+2025-12-06 19:36:38,020 - main - INFO - Spark会话已关闭
+2025-12-06 19:36:38,026 - py4j.clientserver - INFO - Closing down clientserver connection

@@ -11,6 +11,42 @@ class DataLoader:
         self.spark = spark
         self.logger = logging.getLogger(__name__)
 
+    def load_kdd99(self):
+        """加载KDD Cup 1999数据集（10%子集）"""
+        from config import Config  # 确保Config中配置了KDD99路径
+        train_path = Config.KDD99_TRAIN_PATH  # 例如：data/raw/kddcup99/kddcup.data_10_percent
+        test_path = Config.KDD99_TEST_PATH  # 例如：data/raw/kddcup99/corrected
+
+        # KDDCup1999字段名（共42列）
+        columns = [
+            'duration', 'protocol_type', 'service', 'flag', 'src_bytes', 'dst_bytes',
+            'land', 'wrong_fragment', 'urgent', 'hot', 'num_failed_logins',
+            'logged_in', 'num_compromised', 'root_shell', 'su_attempted', 'num_root',
+            'num_file_creations', 'num_shells', 'num_access_files', 'num_outbound_cmds',
+            'is_host_login', 'is_guest_login', 'count', 'srv_count', 'serror_rate',
+            'srv_serror_rate', 'rerror_rate', 'srv_rerror_rate', 'same_srv_rate',
+            'diff_srv_rate', 'srv_diff_host_rate', 'dst_host_count', 'dst_host_srv_count',
+            'dst_host_same_srv_rate', 'dst_host_diff_srv_rate', 'dst_host_same_src_port_rate',
+            'dst_host_srv_diff_host_rate', 'dst_host_serror_rate', 'dst_host_srv_serror_rate',
+            'dst_host_rerror_rate', 'dst_host_srv_rerror_rate', 'attack_type'
+        ]
+
+        # 加载训练集
+        df = self.spark.read.csv(
+            "data/kddcup99/kddcup.data_10_percent",
+            header=False,
+            inferSchema=True
+        )
+        df = df.toDF(*columns)
+
+        # 添加标签列（0=正常，1=攻击）
+        df = df.withColumn(
+            "label",
+            when(col("attack_type") == "normal.", 0).otherwise(1)
+        )
+
+        return combined_df
+
     def load_dataset(self):
         """加载UNSW-NB15数据集"""
         from config import Config

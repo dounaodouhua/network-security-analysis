@@ -15,7 +15,11 @@ from main import NetworkSecurityAnalysis
 
 def run_analysis():
     """运行分析"""
-    parser = argparse.ArgumentParser(description="运行网络安全分析 - UNSW-NB15数据集")
+    parser = argparse.ArgumentParser(description="运行网络安全分析 - 支持多数据集")
+    # 添加数据集选择参数
+    parser.add_argument('--dataset', type=str, default='unsw_nb15',
+                        choices=['unsw_nb15', 'kddcup99'],  # 支持的数据集
+                        help='选择数据集（默认：unsw_nb15）')
     parser.add_argument('--mode', type=str, default='batch',
                         choices=['batch', 'streaming', 'interactive'],
                         help='运行模式')
@@ -26,19 +30,20 @@ def run_analysis():
 
     args = parser.parse_args()
 
+    # 打印信息时更新数据集显示
     print(f"""
     ========================================
-    网络安全态势分析系统 - UNSW-NB15
+    网络安全态势分析系统 - {args.dataset}
     ========================================
-    数据集: UNSW-NB15
+    数据集: {args.dataset}
     模式: {args.mode}
     输出目录: {args.output}
     可视化: {args.visualize}
     ========================================
     """)
 
-    # 创建分析器实例
-    analyzer = NetworkSecurityAnalysis()
+    # 创建分析器实例时传入数据集参数
+    analyzer = NetworkSecurityAnalysis(dataset=args.dataset)
 
     try:
         if args.mode == 'batch':

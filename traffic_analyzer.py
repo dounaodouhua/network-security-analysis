@@ -187,6 +187,19 @@ class TrafficAnalyzer:
 
     def _attack_pattern_analysis(self, df):
         """攻击模式分析"""
+        attack_categories = {
+            'normal.': 'normal',
+            'back.': 'dos', 'land.': 'dos', 'neptune.': 'dos', 'pod.': 'dos', 'smurf.': 'dos', 'teardrop.': 'dos',
+            'ftp_write.': 'r2l', 'guess_passwd.': 'r2l', 'imap.': 'r2l', 'multihop.': 'r2l',
+            'phf.': 'r2l', 'spy.': 'r2l', 'warezclient.': 'r2l', 'warezmaster.': 'r2l',
+            'buffer_overflow.': 'u2r', 'loadmodule.': 'u2r', 'perl.': 'u2r', 'rootkit.': 'u2r',
+            'ipsweep.': 'probe', 'nmap.': 'probe', 'portsweep.': 'probe', 'satan.': 'probe'
+        }
+
+        # 添加攻击类别列
+        attack_cat_udf = udf(lambda x: attack_categories.get(x, 'unknown'))
+        df = df.withColumn("attack_category", attack_cat_udf(col("attack_type")))
+
         self.logger.info("执行攻击模式分析")
 
         attack_stats = {}

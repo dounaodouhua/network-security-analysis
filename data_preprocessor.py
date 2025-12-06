@@ -70,7 +70,7 @@ class DataPreprocessor:
             outlier_cols.append('duration')
         elif 'dur' in df_clean.columns:
             outlier_cols.append('dur')
-        
+
         for col_name in outlier_cols:
             df_clean = self._remove_outliers(df_clean, col_name)
 
@@ -114,11 +114,11 @@ class DataPreprocessor:
             df = df.withColumn("bytes_ratio",
                                when(col("dst_bytes") > 0, col("src_bytes") / col("dst_bytes")).otherwise(0))
 
-        # 3. 连接行为特征
+        # KDD特有特征：连接频率特征
         if all(col in df.columns for col in ['count', 'srv_count']):
             df = df.withColumn("connection_intensity", col("count") + col("srv_count"))
 
-        # 4. 协议特征编码
+        # 协议特征编码（KDD的protocol_type/service/flag）
         categorical_cols = ['protocol_type', 'service', 'flag']
         existing_cat_cols = [c for c in categorical_cols if c in df.columns]
 

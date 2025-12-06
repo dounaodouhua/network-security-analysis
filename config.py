@@ -1,6 +1,6 @@
 import os
 from pyspark.sql import SparkSession
-
+from pathlib import Path
 
 class Config:
     # Spark配置
@@ -16,6 +16,14 @@ class Config:
     LLM_API_KEY = os.getenv("api", "sk-ca8ce42d044c4b87ac2c31bdd2ef4f17")  # DeepSeek API Key
     LLM_MODEL = "deepseek-chat"  # DeepSeek 模型
     LLM_BASE_URL = "https://api.deepseek.com/v1"  # DeepSeek API 地址
+
+    # 新增KDD数据集路径
+    KDD_DATA_PATH = "data/kddcup99/kddcup.data_10_percent"
+
+    KDD99_TRAIN_PATH = "data/raw/kddcup99/kddcup.data_10_percent"
+    KDD99_TEST_PATH = "data/raw/kddcup99/corrected"
+    KDD99_NAMES_PATH = "data/raw/kddcup99/kddcup.names"
+    KDD99_ATTACK_TYPES = "data/raw/kddcup99/training_attack_types"
 
     # 可视化配置
     VISUALIZATION_PORT = 8050
