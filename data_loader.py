@@ -2,55 +2,71 @@ from pyspark.sql import DataFrame
 from pyspark.sql.functions import col, count, when, isnan
 from pyspark.sql.types import *
 import logging
-
+from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
+import os
 
 class DataLoader:
-    """数据加载与理解模块 - UNSW-NB15数据集"""
-
-    def __init__(self, spark):
+    def __init__(self, spark: SparkSession, dataset: str = "unsw_nb15"):
         self.spark = spark
+        self.dataset = dataset.lower()
         self.logger = logging.getLogger(__name__)
+        self._validate_dataset()
 
-    def load_kdd99(self):
-        """加载KDD Cup 1999数据集（10%子集）"""
-        from config import Config  # 确保Config中配置了KDD99路径
-        train_path = Config.KDD99_TRAIN_PATH  # 例如：data/raw/kddcup99/kddcup.data_10_percent
-        test_path = Config.KDD99_TEST_PATH  # 例如：data/raw/kddcup99/corrected
-
-        # KDDCup1999字段名（共42列）
-        columns = [
-            'duration', 'protocol_type', 'service', 'flag', 'src_bytes', 'dst_bytes',
-            'land', 'wrong_fragment', 'urgent', 'hot', 'num_failed_logins',
-            'logged_in', 'num_compromised', 'root_shell', 'su_attempted', 'num_root',
-            'num_file_creations', 'num_shells', 'num_access_files', 'num_outbound_cmds',
-            'is_host_login', 'is_guest_login', 'count', 'srv_count', 'serror_rate',
-            'srv_serror_rate', 'rerror_rate', 'srv_rerror_rate', 'same_srv_rate',
-            'diff_srv_rate', 'srv_diff_host_rate', 'dst_host_count', 'dst_host_srv_count',
-            'dst_host_same_srv_rate', 'dst_host_diff_srv_rate', 'dst_host_same_src_port_rate',
-            'dst_host_srv_diff_host_rate', 'dst_host_serror_rate', 'dst_host_srv_serror_rate',
-            'dst_host_rerror_rate', 'dst_host_srv_rerror_rate', 'attack_type'
-        ]
-
-        # 加载训练集
-        df = self.spark.read.csv(
-            "data/kddcup99/kddcup.data_10_percent",
-            header=False,
-            inferSchema=True
-        )
-        df = df.toDF(*columns)
-
-        # 添加标签列（0=正常，1=攻击）
-        df = df.withColumn(
-            "label",
-            when(col("attack_type") == "normal.", 0).otherwise(1)
-        )
-
-        return combined_df
+    def _validate_dataset(self):
+        if self.dataset not in Config.SUPPORTED_DATASETS:
+            raise ValueError(f"不支持的数据集: {self.dataset}，支持的数据集: {Config.SUPPORTED_DATASETS}")
 
     def load_dataset(self):
-        """加载UNSW-NB15数据集"""
-        from config import Config
-        return self._load_unsw_nb15(Config.DATA_PATH)
+        """根据配置加载对应数据集"""
+        if self.dataset == "unsw_nb15":
+            return self._load_unsw_nb15()
+        elif self.dataset == "kddcup99":
+            return self._load_kdd99()
+
+    def _load_kdd99(self):
+        """加载KDD99数据集"""
+        self.logger.info("加载KDD99数据集...")
+
+        # 检查文件是否存在
+        if not os.path.exists(Config.KDD99_TRAIN_PATH):
+            raise FileNotFoundError(f"KDD99训练数据不存在: {Config.KDD99_TRAIN_PATH}")
+
+        # 定义特征 schema
+        schema = self._get_kdd99_schema()
+
+        # 读取数据
+        df = self.spark.read.csv(
+            Config.KDD99_TRAIN_PATH,
+            schema=schema,
+            header=False,
+            inferSchema=False
+        )
+
+        # 添加标签列（正常/攻击）
+        df = df.withColumn("label",
+                           when(col("attack_type") == "normal", 0).otherwise(1)
+                           )
+
+        return df
+
+    def _get_kdd99_schema(self):
+        """定义KDD99特征schema"""
+        # 从kddcup.names读取特征名（排除最后一行的label）
+        with open(Config.KDD99_NAMES_PATH, 'r') as f:
+            lines = [line.strip() for line in f if line.strip() and not line.startswith('#')]
+
+        fields = []
+        for line in lines[:-1]:  # 排除最后一行的label定义
+            name, dtype = line.split(': ')
+            if dtype == 'continuous':
+                fields.append(StructField(name, FloatType(), True))
+            else:
+                fields.append(StructField(name, StringType(), True))
+
+        # 添加攻击类型列
+        fields.append(StructField("attack_type", StringType(), True))
+        return StructType(fields)
 
     def _load_unsw_nb15(self, filepath):
         """加载UNSW-NB15数据集"""
@@ -450,40 +466,18 @@ class DataLoader:
         self.logger.info(f"已创建UNSW-NB15示例数据: {filepath} (共{len(data_rows)}条记录)")
 
     def get_data_statistics(self, df):
-        """获取数据统计信息"""
-        from pyspark.sql.functions import count, when
-
-        # 基本统计
-        total_count = df.count()
-
-        # 攻击统计
-        if "label" in df.columns:
-            attack_count = df.filter(col("label") != 0).count()
-            normal_count = df.filter(col("label") == 0).count()
-            attack_ratio = attack_count / total_count if total_count > 0 else 0
-        elif "attack_cat" in df.columns:
-            attack_count = df.filter(col("attack_cat") != "Normal").count()
-            normal_count = df.filter(col("attack_cat") == "Normal").count()
-            attack_ratio = attack_count / total_count if total_count > 0 else 0
-        else:
-            attack_count = normal_count = attack_ratio = 0
-
-        # 列信息
-        columns = df.columns
-        dtypes = df.dtypes
-
-        # 缺失值统计
-        missing_stats = {}
-        for column in columns:
-            missing_count = df.filter(col(column).isNull() | isnan(col(column))).count()
-            missing_stats[column] = missing_count
-
-        return {
-            "count": total_count,
-            "columns": columns,
-            "dtypes": dtypes,
-            "attack_count": attack_count,
-            "normal_count": normal_count,
-            "attack_ratio": attack_ratio,
-            "missing_stats": missing_stats
+        """获取数据集统计信息（兼容两种数据集）"""
+        stats = {
+            "total_records": df.count(),
+            "total_features": len(df.columns) - 1,  # 排除label列
+            "dataset_type": self.dataset
         }
+
+        # 攻击样本统计
+        if self.dataset == "kddcup99":
+            attack_stats = df.groupBy("attack_type").count().collect()
+            stats["attack_types"] = {row["attack_type"]: row["count"] for row in attack_stats}
+        else:
+            pass
+
+        return stats

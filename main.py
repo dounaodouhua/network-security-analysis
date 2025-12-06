@@ -21,16 +21,18 @@ from visualizer import NetworkVisualizer
 
 
 class NetworkSecurityAnalysis:
-    """网络安全分析主类 - 支持多数据集"""
+    def __init__(self, dataset: str = "unsw_nb15"):
+        self.dataset = dataset
+        self.spark = self._init_spark()
+        self.data_loader = DataLoader(self.spark, dataset)
+        self.preprocessor = DataPreprocessor(self.spark)
 
-    def __init__(self, dataset="unsw_nb15"):  # 接收数据集参数
-        self.spark = create_spark_session()
-        self.dataset = dataset  # 保存数据集类型
+
         self.logger = self._setup_logging()
 
         # 初始化组件（保持不变）
-        self.data_loader = DataLoader(self.spark)
-        self.preprocessor = DataPreprocessor(self.spark)
+
+
         self.analyzer = TrafficAnalyzer(self.spark)
         self.report_gen = ReportGenerator()
         self.visualizer = NetworkVisualizer()
@@ -51,26 +53,16 @@ class NetworkSecurityAnalysis:
         return logging.getLogger(__name__)
 
     def run_pipeline(self):
-        """运行完整分析流水线"""
         self.logger.info(f"开始 {self.dataset} 数据集的网络安全态势分析")
-
         try:
-            # 1. 数据加载：根据数据集类型加载
-            self.logger.info("步骤1: 数据获取与理解")
-            if self.dataset == "kddcup99":
-                df = self.data_loader.load_kdd99()  # 调用KDD99加载方法
-            else:
-                df = self.data_loader.load_dataset()  # 默认加载UNSW-NB15
+            # 1. 数据加载
+            df = self.data_loader.load_dataset()
 
             # 2. 数据预处理
-            self.logger.info("步骤2: 数据预处理")
-            processed_df = self.preprocessor.preprocess(df)
-            self.results['processed_data'] = processed_df
+            processed_df = self.preprocessor.preprocess(df, self.dataset)
 
-            # 3. 网络流量分析
-            self.logger.info("步骤3: 网络流量分析")
-            analysis_results = self.analyzer.comprehensive_analysis(processed_df)
-            self.results['analysis'] = analysis_results
+            # 3. 分析（后续需调整analyzer兼容KDD99）
+            analysis_results = self.analyzer.comprehensive_analysis(processed_df, self.dataset)
 
             # 4. 生成报告
             self.logger.info("步骤4: 生成分析报告")
@@ -88,7 +80,7 @@ class NetworkSecurityAnalysis:
             self.logger.info("分析完成！")
 
             return self.results
-
+            # ... 其余流程保持不变 ...
         except Exception as e:
             self.logger.error(f"分析过程中发生错误: {str(e)}")
             raise

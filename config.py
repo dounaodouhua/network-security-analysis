@@ -20,10 +20,11 @@ class Config:
     # 新增KDD数据集路径
     KDD_DATA_PATH = "data/kddcup99/kddcup.data_10_percent"
 
-    KDD99_TRAIN_PATH = "data/raw/kddcup99/kddcup.data_10_percent"
-    KDD99_TEST_PATH = "data/raw/kddcup99/corrected"
-    KDD99_NAMES_PATH = "data/raw/kddcup99/kddcup.names"
-    KDD99_ATTACK_TYPES = "data/raw/kddcup99/training_attack_types"
+    KDD99_TRAIN_PATH = "data/kddcup99/kddcup.data_10_percent"
+    KDD99_TEST_PATH = "data/kddcup99/corrected"
+    KDD99_NAMES_PATH = "data/kddcup99/kddcup.names"
+    KDD99_ATTACK_TYPES = "data/kddcup99/training_attack_types"
+    SUPPORTED_DATASETS = ["unsw_nb15", "kddcup99"]  # 新增支持KDD99
 
     # 可视化配置
     VISUALIZATION_PORT = 8050

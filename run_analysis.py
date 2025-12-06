@@ -14,12 +14,10 @@ from main import NetworkSecurityAnalysis
 
 
 def run_analysis():
-    """运行分析"""
-    parser = argparse.ArgumentParser(description="运行网络安全分析 - 支持多数据集")
-    # 添加数据集选择参数
+    parser = argparse.ArgumentParser(description="运行网络安全分析")
     parser.add_argument('--dataset', type=str, default='unsw_nb15',
-                        choices=['unsw_nb15', 'kddcup99'],  # 支持的数据集
-                        help='选择数据集（默认：unsw_nb15）')
+                        choices=['unsw_nb15', 'kddcup99'],  # 新增kddcup99选项
+                        help='数据集选择')
     parser.add_argument('--mode', type=str, default='batch',
                         choices=['batch', 'streaming', 'interactive'],
                         help='运行模式')
@@ -30,7 +28,6 @@ def run_analysis():
 
     args = parser.parse_args()
 
-    # 打印信息时更新数据集显示
     print(f"""
     ========================================
     网络安全态势分析系统 - {args.dataset}

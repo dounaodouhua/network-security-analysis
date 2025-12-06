@@ -16,7 +16,17 @@ class NetworkVisualizer:
         self.logger = logging.getLogger(__name__)
         self.app = None
 
-    def create_dashboard(self, analysis_results):
+    def create_dashboard(self, results):
+        dataset_type = results['data_stats']['dataset_type']
+
+        # 根据数据集类型调整图表标题和特征名
+        if dataset_type == "kddcup99":
+            attack_feature = "attack_category"  # KDD99用大类
+            traffic_cols = ["src_bytes", "dst_bytes"]
+        else:
+            attack_feature = "attack_cat"  # UNSW-NB15用的字段
+            traffic_cols = ["sbytes", "dbytes"]
+
         """创建可视化仪表盘"""
         self.logger.info("创建可视化仪表盘")
 

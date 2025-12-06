@@ -16,20 +16,55 @@ class DataPreprocessor:
         self.logger = logging.getLogger(__name__)
         self.preprocessing_pipeline = None
 
-    def preprocess(self, df):
-        """执行完整的预处理流程"""
-        self.logger.info("开始数据预处理")
+    def preprocess(self, df, dataset_type):
+        """根据数据集类型选择预处理逻辑"""
+        if dataset_type == "kddcup99":
+            return self._preprocess_kdd99(df)
+        else:
+            return self._preprocess_unsw_nb15(df)
 
-        # 1. 数据清洗
-        df_clean = self._clean_data(df)
+    def _preprocess_kdd99(self, df):
+        """KDD99专用预处理"""
+        self.logger.info("开始KDD99数据预处理...")
 
-        # 2. 特征工程
-        df_features = self._feature_engineering(df_clean)
+        # 1. 处理缺失值
+        df_clean = df.dropna(subset=["attack_type"])
 
-        # 3. 数据平衡处理
-        df_balanced = self._handle_imbalance(df_features)
+        # 2. 数值型特征处理（KDD99的连续特征）
+        numeric_cols = [f.name for f in df_clean.schema if f.dataType == FloatType()]
+        if numeric_cols:
+            imputer = Imputer(
+                inputCols=numeric_cols,
+                outputCols=[f"{c}_imputed" for c in numeric_cols],
+                strategy="mean"
+            )
+            df_clean = imputer.fit(df_clean).transform(df_clean)
+            # 替换原始列
+            for col_name in numeric_cols:
+                df_clean = df_clean.withColumn(col_name, col(f"{col_name}_imputed")).drop(f"{col_name}_imputed")
 
-        return df_balanced
+        # 3. 类别特征编码（协议类型、服务、标志等）
+        categorical_cols = ["protocol_type", "service", "flag"]
+        for col_name in categorical_cols:
+            string_indexer = StringIndexer(inputCol=col_name, outputCol=f"{col_name}_indexed")
+            df_clean = string_indexer.fit(df_clean).transform(df_clean).drop(col_name)
+
+        # 4. 攻击类型映射（合并为四大类）
+        attack_mapping = self._load_kdd99_attack_mapping()
+        mapping_expr = create_map(
+            [lit(k) for k, v in attack_mapping.items()] + [lit(v) for k, v in attack_mapping.items()])
+        df_clean = df_clean.withColumn("attack_category", mapping_expr[col("attack_type")])
+
+        return df_clean
+
+    def _load_kdd99_attack_mapping(self):
+        """加载KDD99攻击类型到大类的映射"""
+        mapping = {"normal": "normal"}
+        with open(Config.KDD99_ATTACK_TYPES, 'r') as f:
+            for line in f:
+                attack, category = line.strip().split()
+                mapping[attack] = category
+        return mapping
 
     def _clean_data(self, df):
         """数据清洗"""
